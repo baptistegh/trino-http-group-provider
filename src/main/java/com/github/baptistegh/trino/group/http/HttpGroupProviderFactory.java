@@ -10,18 +10,14 @@ import com.google.inject.Scopes;
 
 import java.util.Map;
 
-public class HttpGroupProviderFactory
-        implements GroupProviderFactory
-{
+public class HttpGroupProviderFactory implements GroupProviderFactory {
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "http";
     }
 
     @Override
-    public GroupProvider create(Map<String, String> config)
-    {
+    public GroupProvider create(Map<String, String> config) {
         try {
             Bootstrap app = new Bootstrap(
                     binder -> {
@@ -37,8 +33,7 @@ public class HttpGroupProviderFactory
             HttpClient httpClient = new JettyHttpClient(new HttpClientConfig());
 
             return new HttpGroupProvider(httpClient, groupConfig);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

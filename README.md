@@ -14,8 +14,8 @@ A Trino plugin that enables group retrieval from an HTTP endpoint for user autho
 
 ## Requirements
 
-- Java 21 or later
-- Maven 3.8.9 or later
+- Java 24
+- Maven 3.9.11 or later
 - Trino server (tested with version 429)
 
 ## Installation
@@ -68,7 +68,7 @@ mvn clean verify
 
 ### Running Tests
 
-The project includes both unit and integration tests:
+The project includes both unit and integration tests using JUnit 5:
 
 - Run unit tests only:
   ```bash
@@ -79,6 +79,13 @@ The project includes both unit and integration tests:
   ```bash
   mvn verify
   ```
+
+- Run code style check:
+  ```bash
+  mvn checkstyle:check
+  ```
+
+The project uses Google Java Style for code formatting.
 
 ## Docker
 
