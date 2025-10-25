@@ -39,15 +39,15 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>476</dep.trino.version>
-        <dep.airlift.version>361</dep.airlift.version>
+        <dep.trino.version>477</dep.trino.version>
+        <dep.airlift.version>369</dep.airlift.version>
         <dep.joda.version>2.12.6</dep.joda.version>
         <dep.errorprone.version>2.24.1</dep.errorprone.version>
-        <dep.junit.version>5.10.1</dep.junit.version>
-        <dep.mockito.version>5.11.0</dep.mockito.version>
+        <dep.junit.version>6.0.0</dep.junit.version>
+        <dep.mockito.version>5.20.0</dep.mockito.version>
         <dep.bytebuddy.version>1.17.8</dep.bytebuddy.version>
         <dep.wiremock.version>3.0.1</dep.wiremock.version>
-        <dep.assertj.version>3.24.2</dep.assertj.version>
+        <dep.assertj.version>3.27.6</dep.assertj.version>
 
         <air.javadoc.lint>-missing</air.javadoc.lint>
     </properties>
@@ -82,14 +82,14 @@
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.2</version>
+            <version>3.1.1</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.15.3</version>
+            <version>2.20.0</version>
         </dependency>
 
         <dependency>
@@ -107,13 +107,13 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>5.1.0</version>
+            <version>7.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.15.3</version>
+            <version>2.20</version>
             <scope>provided</scope>
         </dependency>
 
@@ -228,7 +228,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.1</version>
                 <configuration>
                     <source>24</source>
                     <target>24</target>
@@ -240,7 +240,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.5.4</version>
                 <configuration>
                     <argLine>--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED -Dnet.bytebuddy.experimental=true</argLine>
                 </configuration>
@@ -250,7 +250,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.5.4</version>
                 <configuration>
                     <argLine>--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED -Dnet.bytebuddy.experimental=true</argLine>
                 </configuration>
@@ -268,12 +268,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.6.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>10.12.5</version>
+                        <version>12.1.0</version>
                     </dependency>
                 </dependencies>
                 <configuration>
