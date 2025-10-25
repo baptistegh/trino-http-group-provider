@@ -9,7 +9,7 @@ COPY src src
 RUN mvn clean package
 
 # Stage 2: Create the Trino image with the plugin
-FROM trinodb/trino:476
+FROM trinodb/trino:477
 
 # Create plugin directory
 RUN mkdir -p /usr/lib/trino/plugin/http-group-provider/
