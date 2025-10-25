@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^io.trino"],
+      "groupName": "trino dependencies"
+    },
+    {
+      "matchPackagePatterns": ["^io.airlift"],
+      "groupName": "airlift dependencies"
+    }
+  ],
+  "maven": {
+    "enabled": true
+  },
+  "prConcurrentLimit": 5,
+  "labels": ["dependencies"],
+  "assignees": ["baptistegh"]
+}
