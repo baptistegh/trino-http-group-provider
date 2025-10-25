@@ -6,11 +6,13 @@ import io.airlift.http.client.Response;
 import io.airlift.http.client.ResponseHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockMakers;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
@@ -38,8 +40,9 @@ class HttpGroupProviderTest {
         provider = new HttpGroupProvider(httpClient, config);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    void shouldReturnGroupsForUser() {
+    void shouldReturnGroupsForUser() throws Exception {
         // Given
         String jsonResponse = """
             ["admin", "users", "developers"]
@@ -60,8 +63,9 @@ class HttpGroupProviderTest {
                 .containsExactlyInAnyOrder("admin", "users", "developers");
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    void shouldReturnEmptySetWhenUserNotFound() {
+    void shouldReturnEmptySetWhenUserNotFound() throws Exception {
         // Given
         when(response.getStatusCode()).thenReturn(404);
         when(httpClient.execute(any(Request.class), any(ResponseHandler.class))).thenAnswer(invocation -> {

@@ -5,12 +5,9 @@ import io.trino.spi.security.GroupProviderFactory;
 
 import java.util.List;
 
-public class HttpGroupPlugin
-        implements Plugin
-{
+public class HttpGroupPlugin implements Plugin {
     @Override
-    public Iterable<GroupProviderFactory> getGroupProviderFactories()
-    {
+    public Iterable<GroupProviderFactory> getGroupProviderFactories() {
         return List.of(new HttpGroupProviderFactory());
     }
 }

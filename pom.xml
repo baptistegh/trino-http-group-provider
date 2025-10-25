@@ -21,15 +21,15 @@
         <repository>
             <id>github</id>
             <name>GitHub Maven Packages</name>
-            <url>https://maven.pkg.github.com/${githubOwner}/${githubRepo}</url>
+            <url>https://maven.pkg.github.com/${githubOwner}/${githubRepo\}</url>
         </repository>
     </distributionManagement>
 
     <properties>
-        <project.build.targetJdk>21</project.build.targetJdk>
-        <air.java.version>21.0.1</air.java.version>
+        <project.build.targetJdk>24</project.build.targetJdk>
+        <air.java.version>24.0.2</air.java.version>
 
-        <air.main.basedir>\${project.basedir}</air.main.basedir>
+        <air.main.basedir>${project.basedir}</air.main.basedir>
 
         <air.release.push-changes>true</air.release.push-changes>
 
@@ -44,7 +44,8 @@
         <dep.joda.version>2.12.6</dep.joda.version>
         <dep.errorprone.version>2.24.1</dep.errorprone.version>
         <dep.junit.version>5.10.1</dep.junit.version>
-        <dep.mockito.version>5.7.0</dep.mockito.version>
+        <dep.mockito.version>5.11.0</dep.mockito.version>
+        <dep.bytebuddy.version>1.14.12</dep.bytebuddy.version>
         <dep.wiremock.version>3.0.1</dep.wiremock.version>
         <dep.assertj.version>3.24.2</dep.assertj.version>
 
@@ -130,6 +131,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+            <version>0.17</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -153,9 +161,42 @@
         </dependency>
 
         <dependency>
-            <groupId>org.wiremock</groupId>
-            <artifactId>wiremock</artifactId>
-            <version>${dep.wiremock.version}</version>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${dep.bytebuddy.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>${dep.bytebuddy.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Airlift test dependencies -->
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>testing</artifactId>
+            <version>${dep.airlift.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>http-server</artifactId>
+            <version>${dep.airlift.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>json</artifactId>
+            <version>${dep.airlift.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>log-manager</artifactId>
+            <version>${dep.airlift.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -175,12 +216,27 @@
                 <version>15</version>
                 <extensions>true</extensions>
             </plugin>
+
+            <!-- Compiler configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>24</source>
+                    <target>24</target>
+                    <release>24</release>
+                </configuration>
+            </plugin>
             
             <!-- Unit Tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.2</version>
+                <configuration>
+                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED -Dnet.bytebuddy.experimental=true</argLine>
+                </configuration>
             </plugin>
 
             <!-- Integration Tests -->
@@ -188,11 +244,44 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.2.2</version>
+                <configuration>
+                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED -Dnet.bytebuddy.experimental=true</argLine>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Code Style Check -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.3.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>10.12.5</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>config/checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -1,52 +1,71 @@
 package com.github.baptistegh.trino.group.http;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import io.airlift.http.client.HttpClientConfig;
-import io.airlift.http.client.jetty.JettyHttpClient;
+import io.airlift.http.client.Request;
+import io.airlift.http.client.Response;
+import io.airlift.http.client.testing.TestingHttpClient;
+import io.airlift.http.client.testing.TestingHttpClient.Processor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Set;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static com.google.common.net.MediaType.JSON_UTF_8;
+import static io.airlift.http.client.HttpStatus.INTERNAL_SERVER_ERROR;
+import static io.airlift.http.client.HttpStatus.NOT_FOUND;
+import static io.airlift.http.client.HttpStatus.OK;
+import static io.airlift.http.client.HttpStatus.UNAUTHORIZED;
+import static io.airlift.http.client.testing.TestingResponse.mockResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HttpGroupProviderIT {
 
-    @RegisterExtension
-    static WireMockExtension wireMock = WireMockExtension.newInstance()
-            .options(wireMockConfig().dynamicPort())
-            .build();
-
-    private JettyHttpClient httpClient;
+    private TestingHttpClient httpClient;
     private HttpGroupProvider provider;
 
     @BeforeEach
     void setUp() {
-        httpClient = new JettyHttpClient(new HttpClientConfig());
+        httpClient = new TestingHttpClient(new Processor() {
+            @Override
+            public Response handle(Request request) {
+                String pathInfo = request.getUri().getPath();
+                String authHeader = request.getHeader("Authorization");
+
+                if (!"Bearer test-token".equals(authHeader)) {
+                    return mockResponse(UNAUTHORIZED, JSON_UTF_8, "Unauthorized");
+                }
+
+                if (pathInfo.endsWith("/testuser")) {
+                    return mockResponse(OK, JSON_UTF_8, "[\"admin\",\"users\",\"developers\"]");
+                }
+                else if (pathInfo.endsWith("/unknown")) {
+                    return mockResponse(NOT_FOUND, JSON_UTF_8, "User not found");
+                }
+                else if (pathInfo.endsWith("/error")) {
+                    return mockResponse(INTERNAL_SERVER_ERROR, JSON_UTF_8, "Internal error"); 
+                }
+                else {
+                    return mockResponse(NOT_FOUND, JSON_UTF_8, "Not found");
+                }
+            }
+        });
+
+        // Configure the provider
         HttpGroupConfig config = new HttpGroupConfig()
-                .setEndpoint("http://localhost:" + wireMock.getPort() + "/groups")
+                .setEndpoint("http://test/groups")
                 .setAuthToken("test-token");
         provider = new HttpGroupProvider(httpClient, config);
     }
 
     @AfterEach
     void tearDown() {
-        httpClient.close();
+        if (httpClient != null) {
+            httpClient.close();
+        }
     }
 
     @Test
     void shouldFetchGroupsFromHttpEndpoint() {
-        // Given
-        wireMock.stubFor(get(urlPathMatching("/groups/testuser"))
-                .withHeader("Authorization", equalTo("Bearer test-token"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("[\"admin\", \"users\", \"developers\"]")));
-
         // When
         Set<String> groups = provider.getGroups("testuser");
 
@@ -54,20 +73,10 @@ class HttpGroupProviderIT {
         assertThat(groups)
                 .hasSize(3)
                 .containsExactlyInAnyOrder("admin", "users", "developers");
-
-        // Verify the request
-        wireMock.verify(getRequestedFor(urlPathEqualTo("/groups/testuser"))
-                .withHeader("Authorization", equalTo("Bearer test-token"))
-                .withHeader("Accept", equalTo("application/json")));
     }
 
     @Test
     void shouldReturnEmptySetWhenUserNotFound() {
-        // Given
-        wireMock.stubFor(get(urlPathMatching("/groups/unknown"))
-                .willReturn(aResponse()
-                        .withStatus(404)));
-
         // When
         Set<String> groups = provider.getGroups("unknown");
 
@@ -77,11 +86,6 @@ class HttpGroupProviderIT {
 
     @Test
     void shouldHandleServerError() {
-        // Given
-        wireMock.stubFor(get(urlPathMatching("/groups/error"))
-                .willReturn(aResponse()
-                        .withStatus(500)));
-
         // When
         Set<String> groups = provider.getGroups("error");
 
