@@ -1,0 +1,39 @@
+# IDE
+.vscode/
+*.code-workspace
+.idea/
+*.iml
+
+# Maven
+target/
+*.jar
+*.war
+*.ear
+*.class
+.classpath
+.project
+.settings/
+dependency-reduced-pom.xml
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Misc
+*.swp
+*.bak
+*.tmp
+*~
+
+# Trino specific
+etc/
+data/
+var/
+
+# Docker
+.env
