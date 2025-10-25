@@ -47,7 +47,7 @@
         <dep.mockito.version>5.20.0</dep.mockito.version>
         <dep.bytebuddy.version>1.17.8</dep.bytebuddy.version>
         <dep.wiremock.version>3.0.1</dep.wiremock.version>
-        <dep.assertj.version>3.24.2</dep.assertj.version>
+        <dep.assertj.version>3.27.6</dep.assertj.version>
 
         <air.javadoc.lint>-missing</air.javadoc.lint>
     </properties>
