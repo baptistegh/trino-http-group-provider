@@ -6,7 +6,7 @@
     <artifactId>trino-http-group-provider</artifactId>
     <packaging>trino-plugin</packaging>
     <name>${project.artifactId}</name>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <description>Trino - HTTP Group Provider</description>
 
     <licenses>
@@ -288,8 +288,7 @@
                 </executions>
             </plugin>
 
-            <plugins>
-                <plugin>
+            <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
                 <version>0.9.0</version>
@@ -298,7 +297,6 @@
                     <publishingServerId>central</publishingServerId>
                 </configuration>
                 </plugin>
-            </plugins>
         </plugins>
 
     </build>
