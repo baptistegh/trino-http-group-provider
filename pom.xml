@@ -7,7 +7,8 @@
     <packaging>trino-plugin</packaging>
     <name>${project.artifactId}</name>
     <version>1.0.2-SNAPSHOT</version>
-    <description>Trino - HTTP Group Provider</description>
+    <description>Trino - HTTP Group Provider Plugin</description>
+    <url>https://github.com/baptistegh/trino-http-group-provider</url>
 
     <licenses>
         <license>
@@ -16,6 +17,18 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <scm>
+        <url>https://github.com/baptistegh/trino-http-group-provider</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>baptistegh</id>
+            <name>Baptiste G.</name>
+            <email>baptiste.gouhoury@scalend.fr</email>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.targetJdk>24</project.build.targetJdk>
@@ -287,7 +300,20 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                    <id>sign-artifacts</id>
+                    <phase>deploy</phase>
+                    <goals>
+                        <goal>sign</goal>
+                    </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
