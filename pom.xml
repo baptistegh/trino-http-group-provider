@@ -6,7 +6,7 @@
     <artifactId>trino-http-group-provider</artifactId>
     <packaging>trino-plugin</packaging>
     <name>${project.artifactId}</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <description>Trino - HTTP Group Provider</description>
 
     <licenses>
