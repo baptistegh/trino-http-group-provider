@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.baptistegh</groupId>
+    <groupId>io.github.baptistegh</groupId>
     <artifactId>trino-http-group-provider</artifactId>
     <packaging>trino-plugin</packaging>
     <name>${project.artifactId}</name>
@@ -18,16 +18,24 @@
     </licenses>
 
     <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Maven Packages</name>
-            <url>https://maven.pkg.github.com/${githubOwner}/${githubRepo\}</url>
-        </repository>
-    </distributionManagement>
+      <repository>
+        <id>ossrh</id>
+        <name>Central Repository OSSRH</name>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+      <snapshotRepository>
+        <id>github</id>
+        <name>GitHub Packages</name>
+        <url>https://maven.pkg.github.com/baptistegh/trino-http-group-provider</url>
+      </snapshotRepository>
+   </distributionManagement>
 
     <properties>
         <project.build.targetJdk>24</project.build.targetJdk>
         <air.java.version>24.0.2</air.java.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <air.main.basedir>${project.basedir}</air.main.basedir>
 
@@ -278,7 +286,6 @@
                 </dependencies>
                 <configuration>
                     <configLocation>config/checkstyle.xml</configLocation>
-                    <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
