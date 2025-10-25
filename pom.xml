@@ -45,7 +45,7 @@
         <dep.errorprone.version>2.24.1</dep.errorprone.version>
         <dep.junit.version>5.10.1</dep.junit.version>
         <dep.mockito.version>5.11.0</dep.mockito.version>
-        <dep.bytebuddy.version>1.14.12</dep.bytebuddy.version>
+        <dep.bytebuddy.version>1.17.8</dep.bytebuddy.version>
         <dep.wiremock.version>3.0.1</dep.wiremock.version>
         <dep.assertj.version>3.24.2</dep.assertj.version>
 
