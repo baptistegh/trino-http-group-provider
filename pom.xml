@@ -120,14 +120,21 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>1.35.0</version>
+            <version>1.55.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-context</artifactId>
-            <version>1.35.0</version>
+            <version>1.55.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-common</artifactId>
+            <version>1.55.0</version>
             <scope>provided</scope>
         </dependency>
 
