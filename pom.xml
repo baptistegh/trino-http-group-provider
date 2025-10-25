@@ -43,7 +43,7 @@
         <dep.airlift.version>361</dep.airlift.version>
         <dep.joda.version>2.12.6</dep.joda.version>
         <dep.errorprone.version>2.24.1</dep.errorprone.version>
-        <dep.junit.version>5.10.1</dep.junit.version>
+        <dep.junit.version>6.0.0</dep.junit.version>
         <dep.mockito.version>5.11.0</dep.mockito.version>
         <dep.bytebuddy.version>1.17.8</dep.bytebuddy.version>
         <dep.wiremock.version>3.0.1</dep.wiremock.version>
