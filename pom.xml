@@ -17,19 +17,6 @@
         </license>
     </licenses>
 
-    <distributionManagement>
-      <repository>
-        <id>ossrh</id>
-        <name>Central Repository OSSRH</name>
-        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-      </repository>
-      <snapshotRepository>
-        <id>github</id>
-        <name>GitHub Packages</name>
-        <url>https://maven.pkg.github.com/baptistegh/trino-http-group-provider</url>
-      </snapshotRepository>
-   </distributionManagement>
-
     <properties>
         <project.build.targetJdk>24</project.build.targetJdk>
         <air.java.version>24.0.2</air.java.version>
@@ -300,6 +287,19 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugins>
+                <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+                </plugin>
+            </plugins>
         </plugins>
+
     </build>
 </project>
