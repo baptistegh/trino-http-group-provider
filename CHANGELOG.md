@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/baptistegh/trino-http-group-provider/compare/v1.0.0...v1.0.1) (2025-10-25)
+
+
+### Bug Fixes
+
+* **ci:** publishing to central using plugin ([#32](https://github.com/baptistegh/trino-http-group-provider/issues/32)) ([3765f9b](https://github.com/baptistegh/trino-http-group-provider/commit/3765f9b871ee0e7bc945926c4b8a04a67ee35b23))
+
 ## 1.0.0 (2025-10-25)
 
 
