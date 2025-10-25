@@ -1,4 +1,4 @@
-package com.github.baptistegh.trino.group.http;
+package io.github.baptistegh.trino.group.http;
 
 import io.airlift.http.client.HttpClient;
 import io.airlift.http.client.Request;

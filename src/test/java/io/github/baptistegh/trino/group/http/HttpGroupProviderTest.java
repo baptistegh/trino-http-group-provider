@@ -1,4 +1,4 @@
-package com.github.baptistegh.trino.group.http;
+package io.github.baptistegh.trino.group.http;
 
 import io.airlift.http.client.HttpClient;
 import io.airlift.http.client.Request;
@@ -6,13 +6,11 @@ import io.airlift.http.client.Response;
 import io.airlift.http.client.ResponseHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockMakers;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
