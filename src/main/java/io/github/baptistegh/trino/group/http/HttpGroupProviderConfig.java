@@ -5,7 +5,7 @@ import io.airlift.configuration.ConfigDescription;
 
 import jakarta.validation.constraints.NotNull;
 
-public class HttpGroupConfig {
+public class HttpGroupProviderConfig {
     private String endpoint;
     private String authToken;
 
@@ -16,7 +16,7 @@ public class HttpGroupConfig {
 
     @Config("http-group-provider.endpoint")
     @ConfigDescription("HTTP endpoint to fetch user groups")
-    public HttpGroupConfig setEndpoint(String endpoint) {
+    public HttpGroupProviderConfig setEndpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -27,7 +27,7 @@ public class HttpGroupConfig {
 
     @Config("http-group-provider.auth-token")
     @ConfigDescription("Authentication token for the HTTP endpoint")
-    public HttpGroupConfig setAuthToken(String authToken) {
+    public HttpGroupProviderConfig setAuthToken(String authToken) {
         this.authToken = authToken;
         return this;
     }

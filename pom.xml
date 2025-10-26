@@ -20,6 +20,9 @@
 
     <scm>
         <url>https://github.com/baptistegh/trino-http-group-provider</url>
+        <connection>scm:git:git://github.com/baptistegh/trino-http-group-provider.git</connection>
+        <developerConnection>scm:git:git@github.com/baptistegh/trino-http-group-provider.git</developerConnection>
+        <tag>${project.version}</tag>
     </scm>
 
     <developers>

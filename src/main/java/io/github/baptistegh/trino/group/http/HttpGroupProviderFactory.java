@@ -1,14 +1,18 @@
 package io.github.baptistegh.trino.group.http;
 
 import io.airlift.bootstrap.Bootstrap;
-import io.airlift.http.client.HttpClient;
-import io.airlift.http.client.HttpClientConfig;
-import io.airlift.http.client.jetty.JettyHttpClient;
 import io.trino.spi.security.GroupProvider;
 import io.trino.spi.security.GroupProviderFactory;
+
+import com.google.inject.Injector;
 import com.google.inject.Scopes;
 
 import java.util.Map;
+
+import static io.airlift.configuration.ConfigBinder.configBinder;
+import static java.util.Objects.requireNonNull;
+
+import io.airlift.http.client.HttpClientBinder;
 
 public class HttpGroupProviderFactory implements GroupProviderFactory {
     @Override
@@ -17,23 +21,23 @@ public class HttpGroupProviderFactory implements GroupProviderFactory {
     }
 
     @Override
-    public GroupProvider create(Map<String, String> config) {
-        try {
-            Bootstrap app = new Bootstrap(
-                    binder -> {
-                        binder.bind(HttpGroupConfig.class).in(Scopes.SINGLETON);
-                    });
+    public GroupProvider create(Map<String, String> requiredConfig) {
+        requireNonNull(requiredConfig, "config is null");
 
-            app.setRequiredConfigurationProperties(config);
-            HttpGroupConfig groupConfig = app
-                    .initialize()
-                    .getInstance(HttpGroupConfig.class);
+        Bootstrap app = new Bootstrap(
+            binder -> {
+                configBinder(binder).bindConfig(HttpGroupProviderConfig.class);
+                binder.bind(GroupProvider.class).to(HttpGroupProvider.class).in(Scopes.SINGLETON);
+                HttpClientBinder
+                    .httpClientBinder(binder)
+                    .bindHttpClient("http-group-provider", ForHttpGroupProvider.class);
+            });
 
-            HttpClient httpClient = new JettyHttpClient(new HttpClientConfig());
+        Injector injector = app
+            .doNotInitializeLogging()
+            .setRequiredConfigurationProperties(requiredConfig)
+            .initialize();
 
-            return new HttpGroupProvider(httpClient, groupConfig);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return injector.getInstance(GroupProvider.class);
     }
 }

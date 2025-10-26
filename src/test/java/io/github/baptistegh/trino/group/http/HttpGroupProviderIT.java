@@ -52,7 +52,7 @@ class HttpGroupProviderIT {
                 }
 
                 if (body.contains("testuser")) {
-                    return mockResponse(OK, JSON_UTF_8, "[\"admin\",\"users\",\"developers\"]");
+                    return mockResponse(OK, JSON_UTF_8, "{\"result\": [\"admin\",\"users\",\"developers\"]}");
                 }
                 else if (body.contains("unknown")) {
                     return mockResponse(NOT_FOUND, JSON_UTF_8, "User not found");
@@ -67,7 +67,7 @@ class HttpGroupProviderIT {
         });
 
         // Configure the provider
-        HttpGroupConfig config = new HttpGroupConfig()
+        HttpGroupProviderConfig config = new HttpGroupProviderConfig()
                 .setEndpoint("http://test/groups")
                 .setAuthToken("test-token");
         provider = new HttpGroupProvider(httpClient, config);

@@ -24,10 +24,3 @@ RUN mkdir -p /usr/lib/trino/plugin/http-group-provider/
 
 # Copy the JAR from builder stage
 COPY --from=builder /build/target/trino-http-group-provider-${VERSION}/*.jar /usr/lib/trino/plugin/http-group-provider
-
-COPY <<EOF "/etc/trino/group-provider.properties"
-group-provider.name=http
-http-group-provider.endpoint=http://your-server/api/groups
-EOF
-
-RUN echo "io.trino=DEBUG" > /etc/trino/log.properties

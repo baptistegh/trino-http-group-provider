@@ -9,6 +9,7 @@ import io.trino.spi.security.GroupProvider;
 import io.airlift.http.client.ByteBufferBodyGenerator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,6 +18,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import static java.util.Objects.requireNonNull;
 
 public class HttpGroupProvider implements GroupProvider {
@@ -25,7 +27,8 @@ public class HttpGroupProvider implements GroupProvider {
     private final String authToken;
     private final ObjectMapper objectMapper;
 
-    public HttpGroupProvider(HttpClient httpClient, HttpGroupConfig config) {
+    @Inject
+    public HttpGroupProvider(@ForHttpGroupProvider HttpClient httpClient, HttpGroupProviderConfig config) {
         this.httpClient = requireNonNull(httpClient, "httpClient is null");
         this.endpoint = requireNonNull(config.getEndpoint(), "endpoint is null");
         this.authToken = config.getAuthToken();
@@ -36,11 +39,11 @@ public class HttpGroupProvider implements GroupProvider {
     public Set<String> getGroups(String user) {
         requireNonNull(user, "user is null");
         try {
-        Builder requestBuilder = Request.builder()
-            .setUri(URI.create(endpoint))
-            .setHeader("Accept", "application/json")
-            .setHeader("Content-Type", "application/json")
-            .setMethod("POST");
+            Builder requestBuilder = Request.builder()
+                .setUri(URI.create(endpoint))
+                .setHeader("Accept", "application/json")
+                .setHeader("Content-Type", "application/json")
+                .setMethod("POST");
 
             if (authToken != null) {
                 requestBuilder.setHeader("Authorization", "Bearer " + authToken);
@@ -48,7 +51,7 @@ public class HttpGroupProvider implements GroupProvider {
 
             // Create JSON body: {"inputs":{"user":"<username>"}}
             String bodyJson = objectMapper.writeValueAsString(
-                java.util.Map.of("inputs", java.util.Map.of("user", user))
+                java.util.Map.of("input", java.util.Map.of("user", user))
             );
             Charset charset = Charset.forName("UTF-8");
             ByteBuffer byteBuffer = charset.encode(bodyJson);
@@ -67,8 +70,13 @@ public class HttpGroupProvider implements GroupProvider {
                 public Set<String> handle(Request request, Response response) throws RuntimeException {
                     if (response.getStatusCode() == 200) {
                         try {
-                            String[] groups = objectMapper.readValue(response.getInputStream(), String[].class);
-                            return Set.copyOf(Arrays.asList(groups));
+                            JsonNode rootNode = objectMapper.readTree(response.getInputStream());
+                            JsonNode groupsNode = rootNode.get("result");
+                            if (groupsNode != null && groupsNode.isArray()) {
+                                String[] groups = objectMapper.treeToValue(groupsNode, String[].class);
+                                return Set.copyOf(Arrays.asList(groups));
+                            }
+                            return Set.of();
                         } catch (IOException e) {
                             throw new RuntimeException("Failed to parse groups response for user: " + user, e);
                         }
