@@ -46,16 +46,33 @@ A Trino plugin that enables group retrieval from an HTTP endpoint for user autho
 
 ## HTTP Endpoint Requirements
 
-The HTTP endpoint should:
-- Accept GET requests to `{endpoint}/{user}`
-- Return a JSON array of strings representing group names
-- Use Bearer token authentication (configurable)
-- Return 404 for unknown users
-- Return groups in the format: `["group1", "group2", "group3"]`
+The HTTP server should expose an endpoint compatible with Open Policy Agent (OPA) input/output formats.
 
-Example response:
+The HTTP endpoint should:
+- Accept `POST` requests
+- Return a JSON object with the `result` key containing a list of strings representing group names
+- Use Bearer token authentication (if needed)
+- Return 404 (or other non 2XX status code) for unknown users
+
+### Request Format
+
 ```json
-["admin", "developers", "users"]
+{
+  "input": {
+    "user": "<username>"
+  }
+}
+```
+
+### Response Format
+
+```json
+{
+  "result": [
+    "<group>",
+    "<group>"
+  ]
+}
 ```
 
 ## Building from Source
