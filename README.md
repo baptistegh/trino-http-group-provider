@@ -1,6 +1,6 @@
 # Trino HTTP Group Provider
 
-[![Build and Test](https://github.com/baptistegh/trino-http-group-provider/actions/workflows/build.yml/badge.svg)](https://github.com/baptistegh/trino-http-group-provider/actions/workflows/build.yml)
+[![Build and Test](https://github.com/baptistegh/trino-http-group-provider/actions/workflows/ci.yml/badge.svg)](https://github.com/baptistegh/trino-http-group-provider/actions/workflows/ci.yml)
 
 A Trino plugin that enables group retrieval from an HTTP endpoint for user authorization and access control.
 
@@ -27,22 +27,18 @@ A Trino plugin that enables group retrieval from an HTTP endpoint for user autho
 
 2. Copy the plugin to your Trino installation:
    ```bash
-   cp target/trino-http-group-provider-*.jar $TRINO_HOME/plugin/http-group-provider/
+   cp -r target/trino-http-group-provider-{version} $TRINO_HOME/plugin/http-group-provider/
    ```
 
 ## Configuration
 
-1. Create `etc/group-provider.properties` in your Trino configuration directory:
-   ```properties
-   group-provider.name=http
-   http-group-provider.endpoint=https://your-api-endpoint/groups
-   http-group-provider.auth-token=your-bearer-token
-   ```
+Create `etc/group-provider.properties` in your Trino configuration directory:
 
-2. Configure the group provider in your Trino server's `etc/config.properties`:
-   ```properties
-   group-provider=http
-   ```
+```properties
+group-provider.name=http
+http-group-provider.endpoint=https://your-api-endpoint/groups
+http-group-provider.auth-token=your-bearer-token
+```
 
 ## HTTP Endpoint Requirements
 
