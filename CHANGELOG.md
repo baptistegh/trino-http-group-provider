@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/baptistegh/trino-http-group-provider/compare/v1.0.1...v1.0.2) (2025-10-26)
+
+
+### Bug Fixes
+
+* `StackOverflow` in runtime ([#40](https://github.com/baptistegh/trino-http-group-provider/issues/40)) ([28d0c3f](https://github.com/baptistegh/trino-http-group-provider/commit/28d0c3f099c15b94ff209cabd0199cdd3f7a90db))
+* **ci:** add gpg signing and set up scm in `pom.xml` ([#36](https://github.com/baptistegh/trino-http-group-provider/issues/36)) ([5f9da71](https://github.com/baptistegh/trino-http-group-provider/commit/5f9da715daa91cdb12bba6d677b07be2747dcaa4))
+
 ## [1.0.1](https://github.com/baptistegh/trino-http-group-provider/compare/v1.0.0...v1.0.1) (2025-10-25)
 
 
