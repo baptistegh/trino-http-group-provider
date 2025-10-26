@@ -22,7 +22,6 @@ public class HttpGroupProviderFactory implements GroupProviderFactory {
             Bootstrap app = new Bootstrap(
                     binder -> {
                         binder.bind(HttpGroupConfig.class).in(Scopes.SINGLETON);
-                        binder.bind(HttpClientConfig.class).in(Scopes.SINGLETON);
                     });
 
             app.setRequiredConfigurationProperties(config);

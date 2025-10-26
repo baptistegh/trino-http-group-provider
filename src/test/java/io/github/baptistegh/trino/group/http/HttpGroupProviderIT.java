@@ -1,5 +1,6 @@
 package io.github.baptistegh.trino.group.http;
 
+import io.airlift.http.client.ByteBufferBodyGenerator;
 import io.airlift.http.client.Request;
 import io.airlift.http.client.Response;
 import io.airlift.http.client.testing.TestingHttpClient;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 import static com.google.common.net.MediaType.JSON_UTF_8;
@@ -28,20 +31,33 @@ class HttpGroupProviderIT {
         httpClient = new TestingHttpClient(new Processor() {
             @Override
             public Response handle(Request request) {
-                String pathInfo = request.getUri().getPath();
                 String authHeader = request.getHeader("Authorization");
+                String body = "";
+
+                var generator = (ByteBufferBodyGenerator) request.getBodyGenerator();
+                if (generator != null) {
+                    try {
+                        var bodyBuilder = new StringBuilder();
+                        for (ByteBuffer byteBuffer : generator.getByteBuffers()) {
+                            bodyBuilder.append(StandardCharsets.UTF_8.decode(byteBuffer).toString());
+                        }
+                        body = bodyBuilder.toString();
+                    } catch (Exception e) {
+                        body = "";
+                    }
+                }
 
                 if (!"Bearer test-token".equals(authHeader)) {
                     return mockResponse(UNAUTHORIZED, JSON_UTF_8, "Unauthorized");
                 }
 
-                if (pathInfo.endsWith("/testuser")) {
+                if (body.contains("testuser")) {
                     return mockResponse(OK, JSON_UTF_8, "[\"admin\",\"users\",\"developers\"]");
                 }
-                else if (pathInfo.endsWith("/unknown")) {
+                else if (body.contains("unknown")) {
                     return mockResponse(NOT_FOUND, JSON_UTF_8, "User not found");
                 }
-                else if (pathInfo.endsWith("/error")) {
+                else if (body.contains("error")) {
                     return mockResponse(INTERNAL_SERVER_ERROR, JSON_UTF_8, "Internal error"); 
                 }
                 else {

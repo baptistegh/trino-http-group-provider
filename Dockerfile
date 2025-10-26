@@ -1,18 +1,33 @@
+ARG VERSION
+
 # Stage 1: Build the JAR
-FROM maven:3.9-eclipse-temurin-21-jammy AS builder
+FROM maven:3.9-amazoncorretto-24-alpine AS builder
+
+ARG VERSION
 
 WORKDIR /build
 COPY pom.xml .
 COPY src src
+COPY config config
 
 # Build the JAR
-RUN mvn clean package
+RUN [[ "${VERSION}" = "$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" ]] || exit 1 \
+    && mvn clean package
 
 # Stage 2: Create the Trino image with the plugin
 FROM trinodb/trino:477
+
+ARG VERSION
 
 # Create plugin directory
 RUN mkdir -p /usr/lib/trino/plugin/http-group-provider/
 
 # Copy the JAR from builder stage
-COPY --from=builder /build/target/trino-http-group-provider-*.jar /usr/lib/trino/plugin/http-group-provider/
+COPY --from=builder /build/target/trino-http-group-provider-${VERSION}/*.jar /usr/lib/trino/plugin/http-group-provider
+
+COPY <<EOF "/etc/trino/group-provider.properties"
+group-provider.name=http
+http-group-provider.endpoint=http://your-server/api/groups
+EOF
+
+RUN echo "io.trino=DEBUG" > /etc/trino/log.properties
