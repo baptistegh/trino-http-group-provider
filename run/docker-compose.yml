@@ -1,0 +1,50 @@
+services:
+  opa:
+    build:
+      context: ./opa/
+      dockerfile: Dockerfile
+    volumes:
+      - ./opa/policies:/policies
+    command:
+      - "run"
+      - "--server"
+      - "--log-format"
+      - "text"
+      - "--log-level"
+      - "debug"
+      - "--addr"
+      - "0.0.0.0:8181"
+      - "/policies"
+    networks:
+      - trino_http_group_provider
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8181/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+
+  trino:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        VERSION: 1.0.2-SNAPSHOT
+    healthcheck:
+      test: ["CMD", "curl", "-I", "http://localhost:8080/v1/status"]
+      interval: 2s
+      timeout: 10s
+      retries: 2
+      start_period: 10s
+    ports:
+      - "8080:8080"
+    networks:
+      - trino_http_group_provider
+    volumes:
+      - ./trino/group-provider.properties:/etc/trino/group-provider.properties
+      - ./trino/access-control.properties:/etc/trino/access-control.properties
+    depends_on:
+      opa:
+        condition: service_healthy
+
+networks:
+  trino_http_group_provider:

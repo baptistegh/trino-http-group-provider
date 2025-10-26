@@ -1,13 +1,13 @@
 package io.github.baptistegh.trino.group.http;
 
+import com.google.common.collect.ImmutableList;
 import io.trino.spi.Plugin;
 import io.trino.spi.security.GroupProviderFactory;
 
-import java.util.List;
 
-public class HttpGroupPlugin implements Plugin {
+public class HttpGroupProviderPlugin implements Plugin {
     @Override
     public Iterable<GroupProviderFactory> getGroupProviderFactories() {
-        return List.of(new HttpGroupProviderFactory());
+        return ImmutableList.of(new HttpGroupProviderFactory());
     }
 }

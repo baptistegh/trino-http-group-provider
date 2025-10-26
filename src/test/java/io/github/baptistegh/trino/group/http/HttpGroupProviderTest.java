@@ -28,11 +28,11 @@ class HttpGroupProviderTest {
     private Response response;
 
     private HttpGroupProvider provider;
-    private HttpGroupConfig config;
+    private HttpGroupProviderConfig config;
 
     @BeforeEach
     void setUp() {
-        config = new HttpGroupConfig()
+        config = new HttpGroupProviderConfig()
                 .setEndpoint("http://test-api/groups")
                 .setAuthToken("test-token");
         provider = new HttpGroupProvider(httpClient, config);
@@ -43,7 +43,7 @@ class HttpGroupProviderTest {
     void shouldReturnGroupsForUser() throws Exception {
         // Given
         String jsonResponse = """
-            ["admin", "users", "developers"]
+            {"result": ["admin", "users", "developers"]}
             """;
         when(response.getStatusCode()).thenReturn(200);
         when(response.getInputStream()).thenReturn(new ByteArrayInputStream(jsonResponse.getBytes(StandardCharsets.UTF_8)));
