@@ -40,7 +40,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <dep.trino.version>477</dep.trino.version>
+        <dep.trino.version>478</dep.trino.version>
         <dep.airlift.version>361</dep.airlift.version>
         <dep.opentelemetry.version>1.54.1</dep.opentelemetry.version>
         <dep.jackson.version>2.20.0</dep.jackson.version>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-plugin-toolkit</artifactId>
-            <version>476</version> <!-- trino-plugin-toolkit is not available for 477 yet -->
+            <version>478</version> <!-- trino-plugin-toolkit is not available for 477 yet -->
         </dependency>
 
         <dependency>
