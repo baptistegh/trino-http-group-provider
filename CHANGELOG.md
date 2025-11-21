@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/baptistegh/trino-http-group-provider/compare/v1.0.2...v1.0.3) (2025-11-21)
+
+
+### Bug Fixes
+
+* **deps:** update trino dependencies to v478 (major) ([#48](https://github.com/baptistegh/trino-http-group-provider/issues/48)) ([0f9264e](https://github.com/baptistegh/trino-http-group-provider/commit/0f9264efc83bcea4350b8793cbd5dbb8f0799eaa))
+
 ## [1.0.2](https://github.com/baptistegh/trino-http-group-provider/compare/v1.0.1...v1.0.2) (2025-10-26)
 
 
