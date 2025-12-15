@@ -15,7 +15,7 @@ RUN [[ "${VERSION}" = "$(mvn help:evaluate -Dexpression=project.version -q -Dfor
     && mvn clean package
 
 # Stage 2: Create the Trino image with the plugin
-FROM trinodb/trino:478
+FROM trinodb/trino:479
 
 ARG VERSION
 
