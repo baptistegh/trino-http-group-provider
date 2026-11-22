@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.3](https://github.com/baptistegh/trino-http-group-provider/compare/v1.0.2...v1.0.3) (2026-11-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency io.airlift:slice to v2.11 ([#68](https://github.com/baptistegh/trino-http-group-provider/issues/68)) ([6af9688](https://github.com/baptistegh/trino-http-group-provider/commit/6af9688e227244d8ba6b4cd2c926fa2ac592f4e6))
+* **deps:** update jackson monorepo ([#49](https://github.com/baptistegh/trino-http-group-provider/issues/49)) ([d7b6df3](https://github.com/baptistegh/trino-http-group-provider/commit/d7b6df37d2a2e1f63d973a17918485a2f75280ad))
+* **deps:** update opentelemetry-java monorepo to v1.55.0 ([#41](https://github.com/baptistegh/trino-http-group-provider/issues/41)) ([ecdf85c](https://github.com/baptistegh/trino-http-group-provider/commit/ecdf85cab4364cb1d9821574c901fdf40a444217))
+* **deps:** update trino dependencies to v478 (major) ([#48](https://github.com/baptistegh/trino-http-group-provider/issues/48)) ([0f9264e](https://github.com/baptistegh/trino-http-group-provider/commit/0f9264efc83bcea4350b8793cbd5dbb8f0799eaa))
+
 ## [1.0.2](https://github.com/baptistegh/trino-http-group-provider/compare/v1.0.1...v1.0.2) (2025-10-26)
 
 
